@@ -1,0 +1,49 @@
+<% include ../allpages/header.ejs %>
+
+<h1>Add a new thing to do</h1>
+<form action="add-submit" method="get">
+    <input type="text" name="name" required/>
+    <input type="submit" value="Add"/>
+</form>
+</br>
+<h1>My List (<%= count %>)</h1>
+<ol class="list-unstyled">
+    <% todos.forEach(function(todo, i) { %>
+        <li><%= todo %></li>
+    <% }); %>
+</ol>
+
+<h1>Update</h1>
+<form action="update-submit" method="get">
+    <input type="number" name="pos" required/>
+    <input type="text" name="name" required/>
+    <input type="submit" value="Update"/>
+</form>
+
+<ul id="todos-list"></ul>
+
+<a href="#" onclick="seeTodos();">See Todos</a><br/>
+
+<script>
+    function seeTodos(){
+        $.ajax({
+            url: '/get-todos',
+            data: false,
+            success: callback,
+            dataType: 'json'
+        });
+    }
+    function callback(data) {
+        data.todos.forEach(function(tiger, i){
+            $('#todos-list').append('<li>'+i+': '+tiger+'</li>');
+        });
+    }
+</script>
+
+<h1>Delete todo</h1>
+<form action="delete-submit" method="get">
+    <input type="number" name="pos" required/>
+    <input type="submit" value="Delete"/>
+</form>
+
+<% include ../allpages/footer.ejs %>
